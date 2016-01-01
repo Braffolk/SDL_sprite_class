@@ -4,7 +4,6 @@
 
 class sprite {
 private:
-	//SDL_Surface* surface;
 	SDL_Texture* texture;
 	int image_number;
 	int xoffset;
@@ -19,12 +18,10 @@ public:
 		render_target = surface;
 	}
 
-
 	// Loads a sprite from the external file specified
 	bool load(std::string filename, int image_count, int xoffset, int yoffset) {
 		SDL_Surface* loaded_image = NULL;
-		//SDL_Surface* optimized_image = NULL;
-
+		
 		loaded_image = SDL_LoadBMP(filename.c_str());
 		if (loaded_image != NULL) {
 			texture = SDL_CreateTextureFromSurface(render_target, loaded_image);
@@ -35,7 +32,6 @@ public:
 			this->yoffset = yoffset;
 
 			SDL_FreeSurface(loaded_image);
-
 			return true;
 		}
 		else {
