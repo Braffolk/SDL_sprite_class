@@ -8,7 +8,7 @@ public:
 	int mouse_y;
 
 	void init() {
-		mouse_x            = 0;
-		mouse_y            = 0;
+		mouse_x = 0;
+		mouse_y = 0;
 	};
 } macro;
