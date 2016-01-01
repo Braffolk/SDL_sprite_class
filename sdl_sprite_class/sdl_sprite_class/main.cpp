@@ -6,6 +6,8 @@
 #include <vector>
 
 #include "macro.hpp"
+#include "sprite.hpp"
+
 using namespace std;
 
 
@@ -40,7 +42,7 @@ int main(int argc, char* args[])
 	else
 	{
 		// Create window
-		window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		window = SDL_CreateWindow("SDL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (window == NULL)
 		{
 			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -61,6 +63,11 @@ int main(int argc, char* args[])
 	// Macros
 	macro.init();
 
+	sprite::set_render_target( screen_surface );
+
+	sprite* spr_test = new sprite();
+	spr_test->load( "test.bmp" , 1 , 0 , 0 );
+
 	// Main Loop
 	SDL_Event event;
 	while (game_running) {
@@ -71,10 +78,10 @@ int main(int argc, char* args[])
 			}
 		}
 
-
 		// FPS Clamped 
 		if (current_time >= last_frame + frames_till_update) {
-
+			
+			spr_test->draw( 0 , 8 , 8 );
 
 			// Update draw area
 			SDL_UpdateWindowSurface(window);
