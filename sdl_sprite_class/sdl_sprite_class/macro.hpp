@@ -12,9 +12,3 @@ public:
 		mouse_y            = 0;
 	};
 } macro;
-
-
-
-
-//extern MACRO macro;
-
