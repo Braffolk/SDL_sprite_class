@@ -25,7 +25,7 @@ int FPS                  = 60;
 int last_frame           = time(0) * 1000;
 float frames_till_update = 1000 / FPS;
 double time_start        = clock();
-int current_time         = ((clock() - time_start) / CLOCKS_PER_SEC) * 1000;
+int current_time         = 0;
 int mouse_x              = 0;
 int mouse_y              = 0;
 
@@ -33,6 +33,7 @@ int main(int argc, char* args[])
 {
 	// The window we'll be rendering to
 	SDL_Window* window = NULL;
+	SDL_Renderer* screen_renderer = NULL;
 
 	// Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -49,24 +50,21 @@ int main(int argc, char* args[])
 		}
 		else
 		{
-			// Get window surface
-			screen_surface = SDL_GetWindowSurface(window);
-
-			// Fill the surface white
-			SDL_FillRect(screen_surface, NULL, SDL_MapRGB(screen_surface->format, rand() * 255, rand() * 255, rand() * 255));
-
-			// Update the surface
-			SDL_UpdateWindowSurface(window);
+			screen_renderer = SDL_CreateRenderer( window , -1 , SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			if (screen_renderer == NULL) {
+				SDL_DestroyWindow( window );
+				SDL_Quit();
+			}
 		}
 	}
 
 	// Macros
 	macro.init();
 
-	sprite::set_render_target( screen_surface );
+	sprite::set_render_target( screen_renderer );
 
 	sprite* spr_test = new sprite();
-	spr_test->load( "test.bmp" , 1 , 0 , 0 );
+	spr_test->load( "test.bmp" , 1 , 16 , 16 );
 
 	// Main Loop
 	SDL_Event event;
@@ -79,14 +77,21 @@ int main(int argc, char* args[])
 		}
 
 		// FPS Clamped 
+		current_time = ((clock() - time_start) / CLOCKS_PER_SEC) * 1000;
 		if (current_time >= last_frame + frames_till_update) {
-			
-			spr_test->draw( 0 , 8 , 8 );
+			SDL_GetMouseState(&macro.mouse_x, &macro.mouse_y);
 
-			// Update draw area
-			SDL_UpdateWindowSurface(window);
+			// Clear renderer
+			SDL_RenderClear(screen_renderer);
+
+
+			spr_test->draw( 0 , macro.mouse_x , macro.mouse_y );
+
+
+			// Draw renderer
+			SDL_RenderPresent(screen_renderer);
+
 			// Update time variables
-			current_time = ((clock() - time_start) / CLOCKS_PER_SEC) * 1000;
 			last_frame = current_time;
 		}
 	}
