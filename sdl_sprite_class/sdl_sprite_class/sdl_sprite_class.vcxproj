@@ -153,6 +153,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="macro.hpp" />
+    <ClInclude Include="sprite.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="test.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
